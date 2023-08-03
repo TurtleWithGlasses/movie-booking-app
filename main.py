@@ -15,3 +15,39 @@ times = ["10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30",
 seat_list = []
 seat_selected = []
 
+class Application(tk.Tk):
+
+    def __int__(self):
+        super().__init__()
+        self.title("Movie Booking App")
+        self.create_widgets()
+
+    def update_movies(self, event=None):
+        self.movie_combo["values"] = movies[self.genre_combo.get()]
+
+    def create_widgets(self):
+        header = tk.Label(self, text="Cinema Seat Booking", font="Arial 12 bold")
+        header.grid(row=0, column=0, columnspan=5, padx=10, pady=10, sticky="w")
+        tkinter.ttk.Separator(self, orient="horizontal").grid(row=1, column=0, columnspan=5, sticky="w")
+        day = tk.Frame(self)
+        tk.Label(day, text="______").pack()
+        tk.Label(day, text="Today", font="Arial 10 bold").pack()
+        tk.Label(day, text="").pack()
+        day.grid(row=2, column=0, padx=10)
+        tk.Label(self, text="Genre: ").grid(row=2, column=1, padx=(10,0))
+        self.genre_combo = tkinter.ttk.Combobox(self, width=15, values=list(movies.keys()), state="readonly")
+        self.genre_combo.set("Select Genre")
+        self.genre_combo.bind("<<ComboboxSelected>>", self.update_movies())
+        self.genre_combo.grid(row=2, column=2)
+
+        tk.Label(self, text="Movie: ").grid(row=2, column=3, padx=(10,0))
+        self.movie_combo = tkinter.ttk.Combobox(self, width=15, state="readonly")
+        self.movie_combo.bind("<<ComboboxSelected>>", self.create_time_buttons())
+        self.movie_combo.set("Select Movie")
+        self.movie_combo.grid(row=2, column=2, padx=(10,0))
+        tkinter.ttk.Separator(self, orient="horizontal").grid(row=3, column=0, columnspan=5, sticky="y")
+
+
+
+app = Application()
+app.mainloop()
