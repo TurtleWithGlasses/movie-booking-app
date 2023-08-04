@@ -17,7 +17,7 @@ seat_selected = []
 
 class Application(tk.Tk):
 
-    def __int__(self):
+    def __init__(self):
         super().__init__()
         self.title("Movie Booking App")
         self.create_widgets()
@@ -44,7 +44,7 @@ class Application(tk.Tk):
         self.movie_combo = tkinter.ttk.Combobox(self, width=15, state="readonly")
         self.movie_combo.bind("<<ComboboxSelected>>", self.create_time_buttons)
         self.movie_combo.set("Select Movie")
-        self.movie_combo.grid(row=2, column=2, padx=(10,0))
+        self.movie_combo.grid(row=2, column=5, padx=(10,0))
         tkinter.ttk.Separator(self, orient="horizontal").grid(row=3, column=0, columnspan=5, sticky="ew")
 
     def create_time_buttons(self, event=None):
@@ -66,10 +66,10 @@ class Application(tk.Tk):
         tk.Label(infer, text="RED = BOOKED", fg="red").grid(row=0, column=1, padx=10)
         tkinter.ttk.Separator(window, orient="horizontal").grid(row=2, column=0, pady=(0, 5), sticky="ew")
 
-        w = tk.canvas(window, width=500, height=15)
+        w = tk.Canvas(window, width=500, height=15)
         w.create_rectangle(10, 0, 490, 10, fill="black")
         w.grid(row=3, column=0)
-        tk.screen(window, text="SCREEN").grid(row=4, column=0, pady=(0, 10))
+        tk.Label(window, text="SCREEN").grid(row=4, column=0, pady=(0, 10))
         seats = tk.Frame(window)
         seats.grid(row=5, column=0)
         seat_list.clear()
@@ -83,7 +83,21 @@ class Application(tk.Tk):
             seat_list.append(temp)
         tk.Button(window, text="Book Seats", bg="black", fg="white", command=self.book_seat).grid(row=6, column=0, pady=10)
 
+    def selected(self, i, j):
+        if seat_list[i][j]["bg"] == "blue":
+            seat_list[i][j]["bg"] = "green"
+            seat_list[i][j]["activebackground"] = "forestgreen"
+            seat_selected.remove((i, j))
+            return
+        seat_list[i][j]["bg"] = "blue"
+        seat_list[i][j]["activebackground"] = "blue"
+        seat_selected.append((i, j))
 
+    def book_seat(self):
+        for i in seat_selected:
+            seat_list[i[0]][i[1]]["bg"] = "brown"
+            seat_list[i[0]][i[1]]["activebackground"] = "brown"
+            seat_list[i[0]][i[1]]["relief"] = "sunken"
 
 
 
